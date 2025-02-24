@@ -1,0 +1,140 @@
+﻿<Window x:Class="GC12_SFTPClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GC12_SFTPClient"
+        mc:Ignorable="d"
+        Title="GC12 SFTP Client" Height="750" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5">
+            <Image Source="gcsftp_icon.png" Width="48" Height="48" VerticalAlignment="Top" Margin="0,0,10,0"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="GC12" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="18"/>
+                <TextBlock Grid.Row="1" Text="SFTP Client" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="14" Margin="0,2,0,0"/>
+            </Grid>
+        </StackPanel>
+
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Host:"/>
+                <TextBox x:Name="txtHost" Grid.Row="0" Grid.Column="1" Margin="5"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="Username:"/>
+                <TextBox x:Name="txtUsername" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Content="Password:"/>
+                <PasswordBox x:Name="txtPassword" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Content="Port:"/>
+                <TextBox x:Name="txtPort" Grid.Row="3" Grid.Column="1" Margin="5" Text="22"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="1" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnLoad" Content="Load" Margin="5" Padding="10,3" Click="btnLoad_Click"/>
+                <Button x:Name="btnSave" Content="Save" Margin="5" Padding="10,3" Click="btnSave_Click"/>
+                <Button x:Name="btnConnect" Content="Connect" Margin="5" Padding="10,3" Click="btnConnect_Click"/>
+                <Button x:Name="btnDisconnect" Content="Disconnect" Margin="5" Padding="10,3" Click="btnDisconnect_Click" IsEnabled="False"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="0" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnDownload" Content="Download" Margin="5" Padding="10,3" Click="btnDownload_Click" IsEnabled="False"/>
+                <Button x:Name="btnUpload" Content="Upload" Margin="5" Padding="10,3" Click="btnUpload_Click" IsEnabled="False"/>
+                <Button x:Name="btnDelete" Content="Delete" Margin="5" Padding="10,3" Click="btnDelete_Click" IsEnabled="False"/>
+                <Button x:Name="btnEdit" Content="Edit" Margin="5" Padding="10,3" Click="btnEdit_Click" IsEnabled="False"/>
+                <Button x:Name="btnRefresh" Content="Refresh" Margin="5" Padding="10,3" Click="btnRefresh_Click" IsEnabled="False"/>
+                <Button x:Name="btnCreate" Content="Create" Margin="5" Padding="10,3" Click="btnCreate_Click" IsEnabled="False"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Files:" FontWeight="Bold" Margin="5"/>
+                <TreeView x:Name="tvFiles" Grid.Row="1" Margin="5" SelectedItemChanged="tvFiles_SelectedItemChanged">
+                    <TreeView.Resources>
+                        <local:DirectoryToImageConverter x:Key="DirectoryToImageConverter"/>
+                        <local:FileToImageConverter x:Key="FileToImageConverter"/>
+                    </TreeView.Resources>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="img" Width="16" Height="16" Margin="0,0,5,0"
+                                       Source="{Binding Converter={StaticResource FileToImageConverter}}"/>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </StackPanel>
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                                    <Setter TargetName="img" Property="Source" Value="/Images/open_folder.png"/>
+                                </DataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <EventSetter Event="TreeViewItem.Expanded" Handler="TreeViewItem_Expanded"/>
+                            <Setter Property="IsExpanded" Value="{Binding IsRoot, Mode=OneWay}"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </Grid>
+        </Border>
+
+        <TextBlock x:Name="txtStatus" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Foreground="Gray"/>
+
+        <ProgressBar x:Name="progressBar" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="20" Margin="5" Minimum="0" Maximum="100" Value="0"/>
+
+        <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Visibility="Collapsed" x:Name="editArea"
+                Height="300">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Edit File" FontWeight="Bold" Margin="5"/>
+                <TextBox x:Name="txtEdit" Grid.Row="1" Margin="5" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="btnSaveEdit" Content="Save" Margin="5" Padding="10,3" Click="btnSaveEdit_Click"/>
+                    <Button x:Name="btnCancelEdit" Content="Cancel" Margin="5" Padding="10,3" Click="btnCancelEdit_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
