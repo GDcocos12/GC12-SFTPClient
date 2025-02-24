@@ -18,6 +18,12 @@ This is a SFTP client built with C# and WPF, designed for basic file management 
 *   **Status Bar:** Displays status messages to indicate the current operation and any errors.
 *   **Refresh Button**:  Manually refresh the file tree.
 
+## Installation
+
+1.  **Download:** Download the latest release ZIP archive from the [Releases](https://github.com/GDcocos12/GC12-SFTPClient/releases) page.
+2.  **Extract:** Extract the contents of the ZIP archive to a folder on your computer.
+3.  **Run:** Double-click the `GC12_SFTPClient.exe` file to launch the application.  No installation is required; it's a standalone executable.
+
 ## Prerequisites
 
 *   .NET Framework (or .NET Core, depending on how you build it) - typically .NET 6.0 or later.
