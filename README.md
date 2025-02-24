@@ -4,9 +4,9 @@ This is a SFTP client built with C# and WPF, designed for basic file management 
 
 ## Screenshots
 
-![ScrSh1](screenshots/sc1.png)
-![ScrSh2](screenshots/sc2.png)
-![ScrSh3](screenshots/sc3.png)
+![ScrSh1](screenshots/sc5.png)
+![ScrSh2](screenshots/sc6.png)
+![ScrSh3](screenshots/sc7.png)
 
 ## Features
 
