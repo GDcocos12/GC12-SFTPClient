@@ -2,6 +2,12 @@
 
 This is a SFTP client built with C# and WPF, designed for basic file management on remote servers. It allows you to connect to an SFTP server, browse directories, upload and download files, create and delete files and directories, and even edit small text files directly within the application.
 
+## Screenshots
+
+![ScrSh1](screenshots/sc1.png)
+![ScrSh2](screenshots/sc2.png)
+![ScrSh3](screenshots/sc3.png)
+
 ## Features
 
 *   **Connect to SFTP Servers:** Connect to SFTP servers using hostname/IP address, username, password, and port (default is 22).
